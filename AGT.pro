@@ -5,7 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         aristotle.cpp \
-        main.cpp
+        main.cpp \
+    graph.cpp
 
 HEADERS += \
-    aristotle.h
+    aristotle.h \
+    graph.h
