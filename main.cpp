@@ -1,26 +1,14 @@
 #include <iostream>
 
-#include "graph.h"
+
+#include "aristotle.h"
+
 using namespace std;
 
-int main()
-{
-  Graph g;
-
-  g.add_edge("0", "1");
-  g.add_edge("1", "2");
-  g.add_edge("2", "0");
-  g.add_edge("2", "1");
-  g.add_edge("3", "2");
-  g.add_edge("4", "5");
-  g.add_edge("5", "4");
-
-  g.print_graph(cout); std::cout << '\n';
-
-  g.delete_node("2");
-
-  g.print_graph(cout);
-
-
-  return 0;
+int main(int argc, const char **argv) {
+  /*auto CFGCategory = llvm::cl::OptionCategory("CFG");
+  clang::tooling::CommonOptionsParser OptionsParser(argc, argv, CFGCategory);
+  clang::tooling::ClangTool Tool(OptionsParser.getCompilations(), OptionsParser.getSourcePathList());
+  // run the Clang Tool, creating a new FrontendAction.
+  return Tool.run(new ToolFactory);*/
 }
