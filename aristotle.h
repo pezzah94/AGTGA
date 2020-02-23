@@ -2,7 +2,7 @@
 #define ARISTOTLE_H
 
 // Clang includes
-
+#include "graph.h"
 
 #include "/home/petar/Desktop/clangSranje/llvm-project/clang/include/clang/AST/ASTConsumer.h"
 #include "/home/petar/Desktop/clangSranje/llvm-project/clang/include/clang/AST/ASTContext.h"
@@ -73,6 +73,7 @@ class Aristotle
 {
 public:
   Aristotle();
+  Graph* get_mock_graph()const;
 };
 
 #endif // ARISTOTLE_H
