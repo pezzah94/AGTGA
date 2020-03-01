@@ -1,5 +1,0 @@
-/home/petar/build/libc++-6.0/libc++-60/clang/include/clang/AST/ASTConsumer.h
-/home/petar/build/libc++-6.0/libc++-60/clang/include/clang/Frontend/ASTConsumers.h
-/home/petar/build/libc++-6.0/libc++-60/clang/include/clang/Rewrite/Frontend/ASTConsumers.h
-/home/petar/build/libc++-6.0/libc++-60/clang/lib/AST/ASTConsumer.cpp
-/home/petar/build/libc++-6.0/libc++-60/clang/lib/Frontend/ASTConsumers.cpp
