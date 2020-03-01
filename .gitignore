@@ -67,7 +67,7 @@ Thumbs.db
 
 # Binaries
 # --------
-main
+*main
 *.dll
 *.exe
 *cfg
