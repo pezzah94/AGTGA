@@ -72,3 +72,5 @@ Thumbs.db
 *.exe
 *cfg
 
+# PDF docs
+*.pdf
