@@ -11,7 +11,7 @@ HEADERS_DEPENDENCIES :=  \
 #	sources/graph.cpp
 
 HEADERS := -isystem `llvm-config-9 --includedir`
-WARNINGS := -Wall -Wextra -pedantic -Wno-unused-parameter
+WARNINGS := -Wall -Wextra -pedantic -Wno-unused-parameter 
 CXXFLAGS := $(WARNINGS) -std=c++14 -fno-exceptions -fno-rtti -O3 -Os
 LDFLAGS := `llvm-config-9 --ldflags`
 
