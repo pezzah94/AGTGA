@@ -13,7 +13,7 @@ using Node = std::string;
 class Graph
 {
 public:
-  Graph();
+  Graph(){};
   Graph(const std::vector<std::pair<Node, Node>> &edges);
   void add_edge(const Node &n1, const Node &n2);
   void print_graph(std::ostream & out);

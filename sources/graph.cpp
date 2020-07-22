@@ -1,9 +1,5 @@
 #include "../headers/graph.h"
 
-Graph::Graph()
-{
-
-}
 
 Graph::Graph(const std::vector<std::pair<Node, Node> > &edges)
 {

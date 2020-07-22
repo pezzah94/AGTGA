@@ -2,10 +2,18 @@
 #include "headers/aristotle.h"
 
 
+#include <iostream>
+
+
 int main(int argc, const char **argv) {
-  auto CFGCategory = llvm::cl::OptionCategory("CFG");
-  clang::tooling::CommonOptionsParser OptionsParser(argc, argv, CFGCategory);
-  clang::tooling::ClangTool Tool(OptionsParser.getCompilations(), OptionsParser.getSourcePathList());
-  // run the Clang Tool, creating a new FrontendAction.
-  return Tool.run(new ToolFactory);
+
+    
+  //kreiramo klasu Aristotle za kreiranje grafa kontrole toka 
+  Aristotle a(argc, argv);
+
+  Graph g = a.get_graph();
+  
+  g.print_graph(std::cout);
+  
+  return 0;
 }

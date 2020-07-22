@@ -13,10 +13,26 @@
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <clang/Tooling/Tooling.h>
 
+#include <iostream>
+#include <string>
+
 // LLVM includes
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/raw_ostream.h>
+
+#include "../sources/graph.cpp"
+
+//ponoviti ovu zavrzlamu sa makefile-om i sa inkludovanjem stvari
+
+
+#define d(X) std::cout << X << '\n';
+
+Graph g;
+
+
+class Aristotle {
+
 
 class MyCallback : public clang::ast_matchers::MatchFinder::MatchCallback {
  public:
@@ -27,12 +43,67 @@ class MyCallback : public clang::ast_matchers::MatchFinder::MatchCallback {
                                         Function->getBody(),
                                         Result.Context,
                                         clang::CFG::BuildOptions());
+    
+    //auto f = (*CFG).front(); //tipa CFGBlock
+    //auto elementf = f.front();
+    
+    //elementf.dump(); 
+    
+//     elementf.dumpToStream(std::cout); //ne postoji
+    
+//     std::cout << elementf; // ne moze da se pise na izlaz
+    
+  //  print_elem(std::cout, ,elementf);
+    //std::cout << f.getLabel();
+    //Graph g;
     for (const auto* blk : *CFG){
-      blk->dump();        // Prints Basic Blocks.
+//       blk->dump();        // Prints Basic Blocks.
+      //d(blk->getBlockID());
+      //auto succs = blk->succs();  
       
-        
+      //obilazak unutrasnjih
+      for(const auto &s : blk->succs()){
+                //std::cout << s.getBlockID();// znaci s je AdjescentBlock i nema getBlockID
+          
+          //razjasniti sta je tacno reachableBlock
+          if(s.isReachable()) {     
+            //d(s.getReachableBlock()->getBlockID());
+            g.add_edge(
+                std::to_string(blk->getBlockID()),
+                std::to_string(s.getReachableBlock()->getBlockID())
+            
+            );
+          }
+        }
+      
+      
       // do something more.
     }
+    
+    //g.print_graph(std::cout);
+    	/*static int counter = 0;
+		std::cout << CFG->getNumBlockIDs() << std::endl;
+		std::cout << CFG->isLinear() << std::endl;
+		CFG->dump(nullptr, true);
+        std::cout << typeid(*CFG).name();
+        return;
+		for (const auto* blk : *CFG){
+			std::cout << "#####" << counter << "#####" << std::endl;
+			blk->dump();				// Prints Basic Blocks
+			std::cout << "Block size : "<< blk->size() << std::endl;
+			std::cout << "Block succ size : " << blk->succ_size() << std::endl;
+			std::cout << "Block pred size : " << blk->pred_size() << std::endl;
+			std::cout << "Stmt label : "  << blk->getLabel() << std::endl;
+			std::cout << "Block ID : "  << blk->getBlockID() << std::endl;
+			std::cout << blk->succs();
+            
+            std::cout << "###########" << std::endl;
+	
+		}
+		counter++;*/
+		
+    
+    
   }
 };
 
@@ -64,21 +135,38 @@ struct ToolFactory : public clang::tooling::FrontendActionFactory {
   }
 };
 
+public:
+    Aristotle (int argc, const char **argv){
+       
+        auto CFGCategory = llvm::cl::OptionCategory("CFG");
+        clang::tooling::CommonOptionsParser OptionsParser(argc, argv, CFGCategory);
+        clang::tooling::ClangTool Tool(OptionsParser.getCompilations(), OptionsParser.getSourcePathList());
+        // run the Clang Tool, creating a new FrontendAction.
+        Tool.run(new ToolFactory);
+    }
+//     void make_graph(int argc, const char **argv){
+//         auto CFGCategory = llvm::cl::OptionCategory("CFG");
+//         clang::tooling::CommonOptionsParser OptionsParser(argc, argv, CFGCategory);
+//         clang::tooling::ClangTool Tool(OptionsParser.getCompilations(), OptionsParser.getSourcePathList());
+//         run the Clang Tool, creating a new FrontendAction.
+//         Tool.run(new ToolFactory);
+//     }
+    Graph get_graph() const {
+        return g; 
+    };
+
+
+};
 // int main(int argc, const char **argv) {
 //   auto CFGCategory = llvm::cl::OptionCategory("CFG");
 //   clang::tooling::CommonOptionsParser OptionsParser(argc, argv, CFGCategory);
 //   clang::tooling::ClangTool Tool(OptionsParser.getCompilations(), OptionsParser.getSourcePathList());
-//   // run the Clang Tool, creating a new FrontendAction.
+//   run the Clang Tool, creating a new FrontendAction.
 //   return Tool.run(new ToolFactory);
 // }
 
 
 
-// class Aristotle
-// {
-// public:
-//   Aristotle();
-//   Graph* get_mock_graph()const;
-// };
+
 
 #endif // ARISTOTLE_H
