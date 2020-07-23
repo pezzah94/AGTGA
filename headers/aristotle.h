@@ -3,6 +3,8 @@
 // Clang includes
 #include <clang/AST/ASTConsumer.h>
 #include <clang/AST/ASTContext.h>
+#include <clang/AST/Stmt.h>
+
 #include <clang/ASTMatchers/ASTMatchFinder.h>
 #include <clang/ASTMatchers/ASTMatchers.h>
 #include <clang/Analysis/CFG.h>
@@ -25,7 +27,7 @@
 
 //ponoviti ovu zavrzlamu sa makefile-om i sa inkludovanjem stvari
 
-
+using namespace clang;
 #define d(X) std::cout << X << '\n';
 
 Graph g;
@@ -44,6 +46,11 @@ class MyCallback : public clang::ast_matchers::MatchFinder::MatchCallback {
                                         Result.Context,
                                         clang::CFG::BuildOptions());
     
+    
+    //Function->getBody()->dumpColor();
+    //Function->getBody()->dumpPretty(*Result.Context); //korisno stampa kod iz Stmt
+    //return;
+    //Function->getBody()->viewAST();  // ovo kaze da nemam instaliran gv 
     //auto f = (*CFG).front(); //tipa CFGBlock
     //auto elementf = f.front();
     
@@ -57,8 +64,17 @@ class MyCallback : public clang::ast_matchers::MatchFinder::MatchCallback {
     //std::cout << f.getLabel();
     //Graph g;
     for (const auto* blk : *CFG){
-       blk->dump();        // Prints Basic Blocks.
-      //d(blk->getBlockID());
+       blk->dump();    
+       // Prints Basic Blocks.
+       //blk->getLabel()->dump();
+       
+//        std::cout << blk->Elements;
+//         for(std::reverse_iterator<ImplTy::iterator> it=blk->begin; it != blk->end();it++)
+//             (*it)->dump();
+       
+       //blk->dumpColor(); 
+       
+       //d(blk->getBlockID());
       //auto succs = blk->succs();  
       
       //obilazak unutrasnjih

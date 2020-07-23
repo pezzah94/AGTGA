@@ -45,7 +45,7 @@ clean:
 	rm $(TARGET) || echo -n ""
 	
 run:
-	make && ./$(TARGET) test/test.cpp
+	make && ./$(TARGET) test/article-example.c
 
 
 main: graph.o aristotle.o
