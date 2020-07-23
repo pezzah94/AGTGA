@@ -57,11 +57,12 @@ class MyCallback : public clang::ast_matchers::MatchFinder::MatchCallback {
     //std::cout << f.getLabel();
     //Graph g;
     for (const auto* blk : *CFG){
-//       blk->dump();        // Prints Basic Blocks.
+       blk->dump();        // Prints Basic Blocks.
       //d(blk->getBlockID());
       //auto succs = blk->succs();  
       
       //obilazak unutrasnjih
+       //ovde dodati proveru ako ima sledbenika, jer dodaje 0--> , ovako nesto 
       for(const auto &s : blk->succs()){
                 //std::cout << s.getBlockID();// znaci s je AdjescentBlock i nema getBlockID
           
