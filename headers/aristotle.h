@@ -47,7 +47,10 @@ class MyCallback : public clang::ast_matchers::MatchFinder::MatchCallback {
                                         clang::CFG::BuildOptions());
     
     
-    //Function->getBody()->dumpColor();
+    Function->getBody()->dumpColor();
+    Function->getBody()->PrintStats();
+ 
+    
     //Function->getBody()->dumpPretty(*Result.Context); //korisno stampa kod iz Stmt
     //return;
     //Function->getBody()->viewAST();  // ovo kaze da nemam instaliran gv 
@@ -58,6 +61,7 @@ class MyCallback : public clang::ast_matchers::MatchFinder::MatchCallback {
     
 //     elementf.dumpToStream(std::cout); //ne postoji
     
+//     auto stmt = new Stmt( NoStmtClass );
 //     std::cout << elementf; // ne moze da se pise na izlaz
     
   //  print_elem(std::cout, ,elementf);
@@ -67,11 +71,9 @@ class MyCallback : public clang::ast_matchers::MatchFinder::MatchCallback {
        blk->dump();    
        // Prints Basic Blocks.
        //blk->getLabel()->dump();
-       
+    //    std::cout << '['  << blk->front().getKind() << ']' << '\n';
 //        std::cout << blk->Elements;
-//         for(std::reverse_iterator<ImplTy::iterator> it=blk->begin; it != blk->end();it++)
-//             (*it)->dump();
-       
+        
        //blk->dumpColor(); 
        
        //d(blk->getBlockID());
