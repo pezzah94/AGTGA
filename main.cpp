@@ -1,8 +1,9 @@
 #include <cstdlib>
-
+#include <string>
+#include <iostream>
 
 #include "headers/graph.h"
-#include "headers/aristotle.h"
+// #include "headers/aristotle.h"
 
 
 int main(int argc, const char **argv) {
@@ -15,7 +16,7 @@ int main(int argc, const char **argv) {
 	*/
 	std::string program_name = argv[1];
 
-	std::system(("python sources/evaluate.py " + program_name).c_str());
+	std::system(("sources/evaluate.py " + program_name).c_str());
 	// std::cout << std::system(("python sources/evaluate.py " + program_name).c_str()) << std::endl;
 
 
@@ -32,7 +33,7 @@ int main(int argc, const char **argv) {
 
 
 
-
+	std::cout << std::system(("gcov " + program_name).c_str());
 
 
 
