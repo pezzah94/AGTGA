@@ -80,3 +80,4 @@ Thumbs.db
 *.gcda
 *.gcno
 test
+a.out

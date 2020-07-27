@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 
-#include "headers/graph.h"
+// #include "headers/graph.h"
 // #include "headers/aristotle.h"
 
 
@@ -16,24 +16,18 @@ int main(int argc, const char **argv) {
 	*/
 	std::string program_name = argv[1];
 
-	std::system(("sources/evaluate.py " + program_name).c_str());
-	// std::cout << std::system(("python sources/evaluate.py " + program_name).c_str()) << std::endl;
+	// std::system(("sources/evaluate.py " + program_name).c_str());
+	std::cout << "First Call" << std::endl;
+	std::cout << std::system(("python sources/evaluate.py " + program_name).c_str()) << std::endl;
 
 
-	// int i = 10;
-	// while(--i)
-	// {
-	// 	std::cout << std::system("./_test") << std::endl;
-	// 	std::cout << std::system(std::string("gcov " + program_name).c_str()) << std::endl;
-	// 	std::system("rm test.cpp.gcov");
-	// }
+	int i = 4;
+	while(i--)
+	{
+		std::cout << std::system(("python sources/evaluate.py " + program_name + " " + std::to_string(i)).c_str()) << std::endl;
+	}
 
-	// or call python script here
-
-
-
-
-	std::cout << std::system(("gcov " + program_name).c_str());
+	
 
 
 
