@@ -50,8 +50,8 @@ sudo apt install llvm-9 llvm-9-dev clang-9 libclang-9-dev python-clang-9
 ##Examples
 
 
-
-
+Documentation for llvm-cov-10:
+https://llvm.org/docs/CommandGuide/llvm-cov.html
 
 
 
