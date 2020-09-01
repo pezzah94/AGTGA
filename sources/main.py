@@ -17,19 +17,24 @@ def main():
 
     E.compile_program() ## za sad radi
 
-    E.execute_test_program(program_name, '-123'); ##za sad radi
+    #E.execute_test_program(program_name, '-123'); ##za sad radi
 
-    resultGcov = E.run_gcov(program_name);
+    #resultGcov = E.run_gcov(program_name);
 
-    print(resultGcov)
-    # chromo, score = G.generations(pop_size=15,  # Population pop_size
-    #                               c_size=3,  # size of chromosome (can be bytes, size of a number, size of a string...)
-    #                               n_parents=5,  # How many chromosomes are entering crossover
-    #                               mutation_rate=0.1,  # selfexplanatory
-    #                               n_gen=100  # Number of generations (iterations)
-    #                               )
+    C = Configuration('config.json')
 
 
+    chromo, score = G.generations(pop_size=C.populationSize,  # Population pop_size
+                                  c_size=C.chromosomeSize,  # size of chromosome (can be bytes, size of a number, size of a string...)
+                                  n_parents=C.parentsNumber,  # How many chromosomes are entering crossover
+                                  mutation_rate=C.mutationRate,  # selfexplanatory
+                                  n_gen=C.generationsCount # Number of generations (iterations)
+                                  )
+
+
+   # C = Configuration('conf.json')
+
+    #print(C.populationSize)
 
     return 0;
 

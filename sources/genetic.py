@@ -1,18 +1,23 @@
 
 import random
+from configuration import Configuration
 
 from evaluate import Execution as Exec
 
 import subprocess as sp
 
 
-
-
-
 # Valid genes 
 GENES = '''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!"#%&/()=?@${[]}'''
 #GENES  = '''1234567890'''
 class Genetic:
+
+	a = ''
+
+	def __init__(self):
+		a = 'p';
+
+
 
 	def initilization_of_population(self, pop_size, c_size):
 		population = []
@@ -42,16 +47,24 @@ class Genetic:
 			#evaluate = sp.Popen(['python', 'evaluate.py'], stdin=sp.PIPE, stdout=sp.PIPE, stderr = sp.PIPE)
 			#outs ,err = evaluate.communicate(input=bytearray(chromosome,'utf-8'))
 
+			#Executor = Exec.Execution();
+			#print(type(chromosome))
 
+			E = Exec()
 
+			E.execute_test_program('../test/test', data=chromosome);
 
-			#print(outs.decode('UTF-8'))
-			#print(err.decode('UTF-8'))
-			try:
-				score = float(outs.decode('UTF-8'))
-			except ValueError:
-				score = 0.0
+			score = E.run_gcov('../test/test');
+
+			print(score)
+
+			# try:
+			# 	score = float(outs.decode('UTF-8'))
+			# except ValueError:
+			# 	score = 0.0
 			#evaluate.kill()
+
+
 			scores.append(score)
 		population = [x for _,x in sorted(zip(scores,population))]
 		scores.sort()
@@ -137,5 +150,7 @@ class Genetic:
 
 # for i in range(len(chromo)):
 # 	print(chromo[i],score[i])
+
+
 
 

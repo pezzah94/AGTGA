@@ -2,7 +2,8 @@
 import os
 import subprocess as sp
 import sys
-
+import gzip
+import json
 
 DEBUG = 0
 
@@ -69,17 +70,30 @@ class Execution:
 		return 0
 
 
-#za sad cemo ovde posebno da dohvatamo informacije iz gcova pa cemo naknadno da organizujemo kod
+	"""
+	
+	"""
+
 	def run_gcov(self, program_name):
+
+		
 		#ovde cemo najverovatnije da napravimo spoljasnji json koji posle ucitavamo i parsiramo i pravimo sta treba
-		p_gcov = sp.Popen(['gcov', 'test' + '.gcda'], stdout=sp.PIPE)
-		outs ,_ = p_gcov.communicate()
+		p_gcov = sp.Popen(['gcov', '--json', 'test' + '.gcda'], stdout=sp.PIPE)
+
+		#outs ,_ = p_gcov.communicate()
 		if DEBUG:
+			outs, _ = p_gcov.communicate()
 			print("Debug: return stdout:", outs.decode('UTF-8'),file=sys.stderr)
 		p_gcov.kill()
 
-		#ovde mora parsiranje ovog izlaza da se vrati fina struktura
+
+		with gzip.open('test.gcda.gcov.json.gz', 'rb') as f:
+			file_content = f.read()
 
 
-		#print(outs, file=sys.stdout)
-		return outs
+		gcovData = json.loads(file_content);
+
+		#TODO: ovde treba analizirati gcovData i vratiti jedan broj
+
+
+		return 83.3333; #FIX

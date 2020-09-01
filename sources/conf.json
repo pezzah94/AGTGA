@@ -1,0 +1,13 @@
+{
+	"testPath": "",
+	"populationSize": 15,
+	"chromosomeSize": 3,
+	"parentsNumber": 5,
+	"mutationRate": 0.1,
+	"generationsCount": 100,
+	"whatToConsider": "lines"
+}
+
+
+
+
