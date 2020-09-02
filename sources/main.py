@@ -1,8 +1,8 @@
 from genetic import Genetic
 from configuration import Configuration
 from evaluate import Execution
+from testsaver import TestSaver
 
-#znaci ovde kada se importuje importuje se klasa
 
 
 def main():
@@ -18,6 +18,14 @@ def main():
     E.compile_program() ## za sad radi
 
     #E.execute_test_program(program_name, '-123'); ##za sad radi
+    #tests = [('233',0.3898305084745763),('232', 0.15254237288135594)]
+
+    #ts = TestSaver('tests.out')
+    #ts.save_list(tests);
+
+
+    # return 0;
+    # #E.execute_list_tests(program_name, tests);
 
     #resultGcov = E.run_gcov(program_name);
 

@@ -1,9 +1,11 @@
 {
 	"testPath": "putanja/do/fajla!!!",
-	"populationSize": 15,
+	"populationSize": 10,
 	"chromosomeSize": 3,
 	"parentsNumber": 2,
-	"mutationRate": 0.65,
+	"mutationRate": 0.6,
 	"generationsCount": 8,
-	"whatToConsider": "lines"
+	"whatToConsider": "lines",
+	"showIterations": true,
+	"": ""
 }

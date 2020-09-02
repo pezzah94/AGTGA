@@ -146,7 +146,3 @@ class Genetic:
 
 # for i in range(len(chromo)):
 # 	print(chromo[i],score[i])
-
-
-
-

@@ -59,7 +59,6 @@ class Execution:
 			print("Debug: return err:", err.decode("utf-8"), file=sys.stderr)
 			print("Debug: return code:", p_test.returncode, file=sys.stderr)
 
-
 		#print(outs);
 
 		# We slice string by new line, since output is always same for gcov, we can hardcode numbers
@@ -69,8 +68,7 @@ class Execution:
 		#print(extracted_data, file=sys.stdout)
 		return 0
 
-	def get_score(self, jsonStruct):
-
+	def get_score(self, jsonStruct, whatToConsider):
 
 		#print(jsonStruct)
 		lines_count = 0
@@ -87,7 +85,7 @@ class Execution:
 
 
 	"""
-	asd
+	
 	"""
 
 	def run_gcov(self, program_name):
@@ -130,4 +128,11 @@ class Execution:
 		#TODO: ovde treba analizirati gcovData i vratiti jedan broj
 
 
-		return self.get_score(gcovData);
+		return self.get_score(gcovData, 'lines');
+
+	def execute_list_tests(self, program_name, test_cases):
+
+		for test in test_cases:
+			self.execute_test_program(program_name,test)
+
+		return 0;
