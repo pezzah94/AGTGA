@@ -9,16 +9,9 @@ it gets parameters from json file
 """
 
 
-
 class Configuration:
 
-    ##ovo moze da bude private members samo se dodaju dve crte dole i to ne moze da se dohvati sa C.populationSize ...
-
-
-    # default constructor
     def __init__(self, jsonPath):
-
-        #proveriti da li je validan json file
 
         if jsonPath == 'conf.json':
 

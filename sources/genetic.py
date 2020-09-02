@@ -50,7 +50,7 @@ class Genetic:
 
 			score = E.run_gcov('../test/test');
 
-			print(score)
+			print('Score for input', chromosome, score)
 
 			# try:
 			# 	score = float(outs.decode('UTF-8'))
@@ -121,7 +121,7 @@ class Genetic:
 		best_score = []
 		population_nextgen = self.initilization_of_population(pop_size, c_size)
 		for i in range(n_gen):
-			print('This is round :',i)
+			print('Generation no. :',i)
 			scores, pop_after_fit = self.fitness_score(population_nextgen)
 			pop_after_sel = self.selection(pop_after_fit,n_parents)
 			pop_after_cross = self.crossover(pop_after_sel)

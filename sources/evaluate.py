@@ -72,7 +72,6 @@ class Execution:
 	def get_score(self, jsonStruct):
 
 
-
 		#print(jsonStruct)
 		lines_count = 0
 		score = 0
@@ -88,7 +87,7 @@ class Execution:
 
 
 	"""
-	
+	asd
 	"""
 
 	def run_gcov(self, program_name):
