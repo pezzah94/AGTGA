@@ -39,6 +39,8 @@ def main():
                                   n_gen=C.generationsCount # Number of generations (iterations)
                                   )
 
+    #print(E.executed_lines);
+
 
     return 0;
 

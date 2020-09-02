@@ -4,7 +4,7 @@ import subprocess as sp
 import sys
 import gzip
 import json
-
+from testsaver import TestSaver
 DEBUG = 0
 
 """
@@ -16,6 +16,8 @@ To get file coverage we first call compiler with follwoing commands
 """
 class Execution:
 
+	executed_lines = set();
+	total_number_of_lines = -1;
 	def compile_program(self):
 		"""
 		Parsing program
@@ -68,17 +70,23 @@ class Execution:
 		#print(extracted_data, file=sys.stdout)
 		return 0
 
-	def get_score(self, jsonStruct, whatToConsider):
+	def get_score(self, jsonStruct, whatToConsider, testinput):
 
 		#print(jsonStruct)
 		lines_count = 0
+
 		score = 0
 		for file in jsonStruct['files']:
 			lines_count += len(file['lines']); #mozda ovde neka provera da li postoji lines i sl.
-			for line in file['lines']:
 
-				if line['count'] >= 1:
+			if self.total_number_of_lines <= 0:
+				self.total_number_of_lines = len(file['lines']);
+
+			for i in range(0, len(file['lines'])):
+
+				if file['lines'][i]['count'] >= 1:
 					score += 1
+					self.executed_lines.add(i)
 
 
 		return score / lines_count
@@ -88,7 +96,7 @@ class Execution:
 	
 	"""
 
-	def run_gcov(self, program_name):
+	def run_gcov(self, program_name, testinput):
 
 		#TODO:treba prethodno i obrisati gz
 
@@ -128,7 +136,7 @@ class Execution:
 		#TODO: ovde treba analizirati gcovData i vratiti jedan broj
 
 
-		return self.get_score(gcovData, 'lines');
+		return self.get_score(gcovData, 'lines', testinput);
 
 	def execute_list_tests(self, program_name, test_cases):
 
@@ -136,3 +144,8 @@ class Execution:
 			self.execute_test_program(program_name,test)
 
 		return 0;
+
+	def pretty_progress(self, executed_lines, total_number_of_lines):
+		length = 80;
+		percentage = executed_lines/total_number_of_lines;
+		print('Total coverage:','[' + '#'*int(length*percentage) + '.'*int(length*(1-percentage)) +']', percentage*100, '%')

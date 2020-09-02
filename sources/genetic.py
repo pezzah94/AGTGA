@@ -10,6 +10,9 @@ import subprocess as sp
 # Valid genes 
 #GENES = '''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!"#%&/()=?@${[]}'''
 GENES  = '''1234567890'''
+
+E = Exec()
+
 class Genetic:
 
 
@@ -44,11 +47,11 @@ class Genetic:
 			#Executor = Exec.Execution();
 			#print(type(chromosome))
 
-			E = Exec()
+
 
 			E.execute_test_program('../test/test', data=chromosome);
 
-			score = E.run_gcov('../test/test');
+			score = E.run_gcov('../test/test', chromosome);
 
 			print('Score for input', chromosome, score)
 
@@ -130,6 +133,9 @@ class Genetic:
 			best_score.append(scores[0])
 			# print(pop_after_fit)
 			print("best chromosome so far:", str(best_chromo[-1]), best_score[-1])
+
+			#print('Total coverage: ', len(E.executed_lines)/E.total_number_of_lines);
+			E.pretty_progress(len(E.executed_lines), E.total_number_of_lines)
 		return best_chromo, best_score
 
 
