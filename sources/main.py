@@ -21,8 +21,8 @@ def main():
 
     #resultGcov = E.run_gcov(program_name);
 
-    C = Configuration('config.json')
-
+    C = Configuration('conf.json')
+    #print(C.testPath)
 
     chromo, score = G.generations(pop_size=C.populationSize,  # Population pop_size
                                   c_size=C.chromosomeSize,  # size of chromosome (can be bytes, size of a number, size of a string...)
@@ -31,10 +31,6 @@ def main():
                                   n_gen=C.generationsCount # Number of generations (iterations)
                                   )
 
-
-   # C = Configuration('conf.json')
-
-    #print(C.populationSize)
 
     return 0;
 

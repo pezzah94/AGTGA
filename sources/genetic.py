@@ -8,15 +8,9 @@ import subprocess as sp
 
 
 # Valid genes 
-GENES = '''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!"#%&/()=?@${[]}'''
-#GENES  = '''1234567890'''
+#GENES = '''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!"#%&/()=?@${[]}'''
+GENES  = '''1234567890'''
 class Genetic:
-
-	a = ''
-
-	def __init__(self):
-		a = 'p';
-
 
 
 	def initilization_of_population(self, pop_size, c_size):
@@ -30,7 +24,7 @@ class Genetic:
 			global GENES
 			chromosome = ''.join(random.choices(GENES, k = c_size))
 			#################################################
-
+			print('[' + chromosome + ']')
 
 			population.append(chromosome)
 
@@ -110,11 +104,13 @@ class Genetic:
 					# 	# print(chromosome)
 			if random.random() < mutation_rate:
 				global GENES
-				if random.random() < 1/2:
-					chromosome += random.choice(GENES)
+				#if random.random() < 1/2:
+				clist = list(chromosome)
+				clist[random.randrange(len(clist))] = random.choice(GENES)
+				chromosome = "".join(clist)
 				# chromosome.replace(chromosome[j],random.choice(GENES))
-				else:
-					chromosome.replace(chromosome[random.randint(0,len(chromosome)-1)],random.choice(GENES))
+				#else:
+				#	chromosome.replace(chromosome[random.randint(0,len(chromosome)-1)],random.choice(GENES))
 
 			population_nextgen.append(chromosome)
 		#print(population_nextgen)

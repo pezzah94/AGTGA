@@ -69,6 +69,23 @@ class Execution:
 		#print(extracted_data, file=sys.stdout)
 		return 0
 
+	def get_score(self, jsonStruct):
+
+
+
+		#print(jsonStruct)
+		lines_count = 0
+		score = 0
+		for file in jsonStruct['files']:
+			lines_count += len(file['lines']); #mozda ovde neka provera da li postoji lines i sl.
+			for line in file['lines']:
+
+				if line['count'] >= 1:
+					score += 1
+
+
+		return score / lines_count
+
 
 	"""
 	
@@ -76,24 +93,42 @@ class Execution:
 
 	def run_gcov(self, program_name):
 
-		
+		#TODO:treba prethodno i obrisati gz
+
+
 		#ovde cemo najverovatnije da napravimo spoljasnji json koji posle ucitavamo i parsiramo i pravimo sta treba
 		p_gcov = sp.Popen(['gcov', '--json', 'test' + '.gcda'], stdout=sp.PIPE)
 
-		#outs ,_ = p_gcov.communicate()
+		outs ,_ = p_gcov.communicate()
 		if DEBUG:
-			outs, _ = p_gcov.communicate()
+			#outs, _ = p_gcov.communicate()
 			print("Debug: return stdout:", outs.decode('UTF-8'),file=sys.stderr)
 		p_gcov.kill()
 
+		if os.path.exists('test.gcda'):
+			os.remove('test.gcda')
+		else:
+			print("The file test.gcda does not exist")
 
+		#TODO: ovde ako uspesno napravi ovaj fajl onda raditi sta treba
 		with gzip.open('test.gcda.gcov.json.gz', 'rb') as f:
 			file_content = f.read()
 
+		# if os.path.exists('test.gcno'):
+		# 	os.remove('test.gcno')
+		# else:
+		# 	print("The file test.gcno does not exist")
+
+
+
+		if os.path.exists('test.gcda.gcov.json.gz'):
+			os.remove('test.gcda.gcov.json.gz')
+		else:
+			print("The file test.gcda.gcov.json.gz does not exist")
 
 		gcovData = json.loads(file_content);
 
 		#TODO: ovde treba analizirati gcovData i vratiti jedan broj
 
 
-		return 83.3333; #FIX
+		return self.get_score(gcovData);
