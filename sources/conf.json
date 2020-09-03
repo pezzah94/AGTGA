@@ -1,12 +1,12 @@
 {
-	"testPath": "putanja/do/fajla!!!",
+	"srcPath": "../test/test.cpp",
 	"populationSize": 10,
 	"chromosomeSize": 3,
 	"parentsNumber": 2,
-	"mutationRate": 0.6,
+	"mutationRate": 0.4,
 	"generationsCount": 8,
-	"whatToConsider": "lines",
+	"whatToConsider": "functions",
 	"showIterations": true,
-	"": "",
-	"geneTypeList": ["alpha", "digits", "punctuation", "ALPHA"]
+	"debug": false,
+	"geneTypeList": ["digits"]
 }

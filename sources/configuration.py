@@ -19,7 +19,7 @@ class Configuration:
             jsonData = json.loads(file.read());
             file.close();
 
-            self.testPath = jsonData['testPath'];
+            self.srcPath = jsonData['srcPath'];
             self.populationSize = jsonData['populationSize'];
             self.chromosomeSize = jsonData['chromosomeSize'];
             self.parentsNumber = jsonData['parentsNumber'];

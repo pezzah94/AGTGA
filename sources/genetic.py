@@ -1,26 +1,20 @@
 
 import random
 import string
-from evaluate import Execution as Exec
 
-
-E = Exec()
 
 class Genetic:
-	# Valid genes
-	#GENES = '''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!"#%&/()=?@${[]}'''
-	#GENES = '''1234567890'''
 
-	#GENES = string.ascii_letters + string.digits
 	GENES = ''
 	shuffleBool = True;
 
-	def __init__(self, populationSize=10, chromosomeSize=5, parentsNumber=2, mutationRate=0.5, generationsCount=10, geneTypeList=['digits']):
+	def __init__(self, populationSize=10, chromosomeSize=5, parentsNumber=2, mutationRate=0.5, generationsCount=10, geneTypeList=['digits'], executor=None):
 		self.pop_size = populationSize;
 		self.c_size = chromosomeSize;
 		self.n_parents = parentsNumber;
 		self.mutation_rate = mutationRate;
 		self.n_gen = generationsCount;
+		self.executor = executor;
 
 		for type_of_gene in geneTypeList:
 			if type_of_gene == 'alpha':
@@ -54,17 +48,16 @@ class Genetic:
 			# ----------------- With bytes -----------------
 			# chromosome = bytearray('\x00' + ''.join(chr(random.randint(0,255)) for _ in range(c_size)) + '\x00', 'utf-8').decode('utf8')
 			# chromosome = np.random.bytes(c_size)
-			################################################
-			# ----------------- With string -----------------
-			#global GENES
+
+
+
 			chromosome = ''.join(random.choices(self.GENES, k = c_size))
-			#################################################
+
 			print('[' + chromosome + ']')
 
 			population.append(chromosome)
 
-			# print(chromosome.decode('utf-8'))
-			# print(chromosome)
+
 		return population
 
 	def fitness_score(self, population):
@@ -72,32 +65,20 @@ class Genetic:
 		for chromosome in population:
 			# Here we get accuracy score, tricky messy part
 
-			# ovde napraviti posebnu klasu za izvrsavanje i onda
-			#evaluate = sp.Popen(['python', 'evaluate.py'], stdin=sp.PIPE, stdout=sp.PIPE, stderr = sp.PIPE)
-			#outs ,err = evaluate.communicate(input=bytearray(chromosome,'utf-8'))
 
-			#Executor = Exec.Execution();
-			#print(type(chromosome))
+			self.executor.execute_test_program('../test/test', data=chromosome);
 
-
-
-			E.execute_test_program('../test/test', data=chromosome);
-
-			score = E.run_gcov('../test/test', chromosome);
+			score = self.executor.run_gcov('../test/test',chromosome);
 
 			print('Score for input', chromosome, score)
 
-			# try:
-			# 	score = float(outs.decode('UTF-8'))
-			# except ValueError:
-			# 	score = 0.0
-			#evaluate.kill()
+
 
 
 			scores.append(score)
 		population = [x for _,x in sorted(zip(scores,population))]
 		scores.sort()
-		# print(population, scores)
+		#print(population, scores)
 		return scores, population[::-1]  #reverse list
 
 	def selection(self, pop_after_fit, n_parents):
@@ -163,9 +144,9 @@ class Genetic:
 			population_nextgen = self.mutation(pop_after_cross,self.mutation_rate)
 			best_chromo.append(str(pop_after_fit[-1]))
 			best_score.append(scores[0])
-			# print(pop_after_fit)
+			#print(best_chromo)
 			print("best chromosome so far:", str(best_chromo[-1]), best_score[-1])
 
 			#print('Total coverage: ', len(E.executed_lines)/E.total_number_of_lines);
-			E.pretty_progress(len(E.executed_lines), E.total_number_of_lines)
+			self.executor.pretty_progress(len(self.executor.executed_lines), self.executor.total_number_of_lines)
 		return best_chromo, best_score

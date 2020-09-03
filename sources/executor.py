@@ -4,7 +4,7 @@ import subprocess as sp
 import sys
 import gzip
 import json
-from testsaver import TestSaver
+
 DEBUG = 0
 
 """
@@ -14,11 +14,25 @@ To get file coverage we first call compiler with follwoing commands
 	3) Calculate coverage gcov test.cpp
 	4) Read retunred values
 """
-class Execution:
+class Executor:
 
 	executed_lines = set();
+	executed_functions = set();
 	total_number_of_lines = -1;
-	def compile_program(self):
+	total_number_of_functions = -1;
+	srcPath = ''
+	elfFile = ''
+
+	def __init__(self, srcPath):
+
+		if os.path.exists(srcPath):
+			self.srcPath = srcPath;
+			self.compile_program(srcPath);
+		else: print('Neispravna putanja do fajla!', file=sys.stderr);
+
+
+
+	def compile_program(self, program_name):
 		"""
 		Parsing program
 		"""
@@ -26,7 +40,7 @@ class Execution:
 		dir_path = os.path.dirname(os.path.realpath(__file__)).rpartition('/')[0]
 
 		#program_data = sys.stdin.buffer.read()
-		program_name = 'test.cpp' # defined elswhere in program
+		#program_name = 'test.cpp' # defined elswhere in program
 		if program_name[-2:] == '.c': # c program
 			#print("Working with C")
 			extension = '.c'
@@ -41,15 +55,18 @@ class Execution:
 			return -1
 		# data = bytes(program_data[0],'UTF-8')
 
+		print('g++ '  + program_name + extension + ' -fprofile-arcs -ftest-coverage -o '  + program_name)
+		os.system('g++ '  + program_name + extension + ' -fprofile-arcs -ftest-coverage -o '  + program_name)
 
+		# os.system('g++ -o ' + '../' + testing_dir + program_name + ' -fprofile-arcs -ftest-coverage ' + dir_path + '/' + testing_dir  + program_name + extension )
 
-		#print(4, file=sys.stdout)
-		os.system('g++ -o ' + '../' + testing_dir + program_name + ' -fprofile-arcs -ftest-coverage ' + dir_path + '/' + testing_dir  + program_name + extension )
 		# need to add if it compiles succsefully
 		#os.system('cp ../test/test test')
 		#self._execute_test_program(program_name, program_data )
 
 	def execute_test_program(self, program_name, data):
+
+		#print('Executing program', program_name);
 		p_test = sp.Popen(['./' + program_name],stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
 
 		data = bytes(data, 'UTF-8')
@@ -73,35 +90,45 @@ class Execution:
 	def get_score(self, jsonStruct, whatToConsider, testinput):
 
 		#print(jsonStruct)
-		lines_count = 0
+		lines_count = 0;
+		score = 0;
+		functions_count = 0;
 
-		score = 0
-		for file in jsonStruct['files']:
-			lines_count += len(file['lines']); #mozda ovde neka provera da li postoji lines i sl.
+		if whatToConsider == 'lines':
+			for file in jsonStruct['files']:
+				lines_count += len(file['lines']); #mozda ovde neka provera da li postoji lines i sl.
 
-			if self.total_number_of_lines <= 0:
-				self.total_number_of_lines = len(file['lines']);
+				if self.total_number_of_lines <= 0:
+					self.total_number_of_lines = len(file['lines']);
 
-			for i in range(0, len(file['lines'])):
+				for i in range(0, len(file['lines'])):
 
-				if file['lines'][i]['count'] >= 1:
-					score += 1
-					self.executed_lines.add(i)
+					if file['lines'][i]['count'] >= 1:
+						score += 1
+						self.executed_lines.add(i)
+			return score / lines_count
+
+		if whatToConsider == 'functions':
+			for file in jsonStruct['files']:
+				functions_count += len(file['lines']);
+
+				if self.total_number_of_functions <= 0:
+					self.total_number_of_functions = len(file['functions']);
+
+				for i in range(0, len(file['lines'])):
+
+					if file['functions'][i]['count'] >= 1:
+						score += 1
+						self.executed_functions.add(i)
+			return score / functions_count
 
 
-		return score / lines_count
 
+		return -1;
 
-	"""
-	
-	"""
 
 	def run_gcov(self, program_name, testinput):
 
-		#TODO:treba prethodno i obrisati gz
-
-
-		#ovde cemo najverovatnije da napravimo spoljasnji json koji posle ucitavamo i parsiramo i pravimo sta treba
 		p_gcov = sp.Popen(['gcov', '--json', 'test' + '.gcda'], stdout=sp.PIPE)
 
 		outs ,_ = p_gcov.communicate()
@@ -115,10 +142,10 @@ class Execution:
 		else:
 			print("The file test.gcda does not exist")
 
-		#TODO: ovde ako uspesno napravi ovaj fajl onda raditi sta treba
+
 		with gzip.open('test.gcda.gcov.json.gz', 'rb') as f:
 			file_content = f.read()
-
+		#
 		# if os.path.exists('test.gcno'):
 		# 	os.remove('test.gcno')
 		# else:
@@ -133,13 +160,12 @@ class Execution:
 
 		gcovData = json.loads(file_content);
 
-		#TODO: ovde treba analizirati gcovData i vratiti jedan broj
 
 
-		return self.get_score(gcovData, 'lines', testinput);
+
+		return self.get_score(gcovData, 'lines',testinput);
 
 	def execute_list_tests(self, program_name, test_cases):
-
 		for test in test_cases:
 			self.execute_test_program(program_name,test)
 
@@ -149,3 +175,6 @@ class Execution:
 		length = 80;
 		percentage = executed_lines/total_number_of_lines;
 		print('Total coverage:','[' + '#'*int(length*percentage) + '.'*int(length*(1-percentage)) +']', percentage*100, '%')
+
+	def clean_up(self):
+		return 0;
