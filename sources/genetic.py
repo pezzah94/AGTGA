@@ -1,19 +1,51 @@
 
 import random
-from configuration import Configuration
-
+import string
 from evaluate import Execution as Exec
 
-import subprocess as sp
-
-
-# Valid genes 
-#GENES = '''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!"#%&/()=?@${[]}'''
-GENES  = '''1234567890'''
 
 E = Exec()
 
 class Genetic:
+	# Valid genes
+	#GENES = '''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!"#%&/()=?@${[]}'''
+	#GENES = '''1234567890'''
+
+	#GENES = string.ascii_letters + string.digits
+	GENES = ''
+	shuffleBool = True;
+
+	def __init__(self, populationSize=10, chromosomeSize=5, parentsNumber=2, mutationRate=0.5, generationsCount=10, geneTypeList=['digits']):
+		self.pop_size = populationSize;
+		self.c_size = chromosomeSize;
+		self.n_parents = parentsNumber;
+		self.mutation_rate = mutationRate;
+		self.n_gen = generationsCount;
+
+		for type_of_gene in geneTypeList:
+			if type_of_gene == 'alpha':
+				self.GENES += string.ascii_lowercase;
+			if type_of_gene == 'digits':
+				self.GENES += string.digits
+			if type_of_gene == 'punctuation':
+				self.GENES += string.punctuation
+			if type_of_gene == 'ALPHA':
+				self.GENES += string.ascii_uppercase
+			if type_of_gene == 'whitespace':
+				self.GENES += string.whitespace
+
+		if self.shuffleBool:
+			genesList = list(self.GENES);
+			random.shuffle(genesList);
+			self.GENES = ''.join(genesList);
+
+		#print(self.GENES)
+
+
+
+
+
+# random.sample(population, k) mozda ovo treba ustekati
 
 
 	def initilization_of_population(self, pop_size, c_size):
@@ -24,8 +56,8 @@ class Genetic:
 			# chromosome = np.random.bytes(c_size)
 			################################################
 			# ----------------- With string -----------------
-			global GENES
-			chromosome = ''.join(random.choices(GENES, k = c_size))
+			#global GENES
+			chromosome = ''.join(random.choices(self.GENES, k = c_size))
 			#################################################
 			print('[' + chromosome + ']')
 
@@ -106,10 +138,10 @@ class Genetic:
 
 					# 	# print(chromosome)
 			if random.random() < mutation_rate:
-				global GENES
+				#global GENES
 				#if random.random() < 1/2:
 				clist = list(chromosome)
-				clist[random.randrange(len(clist))] = random.choice(GENES)
+				clist[random.randrange(len(clist))] = random.choice(self.GENES)
 				chromosome = "".join(clist)
 				# chromosome.replace(chromosome[j],random.choice(GENES))
 				#else:
@@ -119,16 +151,16 @@ class Genetic:
 		#print(population_nextgen)
 		return population_nextgen
 
-	def generations(self, pop_size, c_size, n_parents, mutation_rate, n_gen):
+	def start_evolution(self):
 		best_chromo = []
 		best_score = []
-		population_nextgen = self.initilization_of_population(pop_size, c_size)
-		for i in range(n_gen):
+		population_nextgen = self.initilization_of_population(self.pop_size, self.c_size)
+		for i in range(self.n_gen):
 			print('Generation no. :',i)
 			scores, pop_after_fit = self.fitness_score(population_nextgen)
-			pop_after_sel = self.selection(pop_after_fit,n_parents)
+			pop_after_sel = self.selection(pop_after_fit,self.n_parents)
 			pop_after_cross = self.crossover(pop_after_sel)
-			population_nextgen = self.mutation(pop_after_cross,mutation_rate)
+			population_nextgen = self.mutation(pop_after_cross,self.mutation_rate)
 			best_chromo.append(str(pop_after_fit[-1]))
 			best_score.append(scores[0])
 			# print(pop_after_fit)
@@ -137,18 +169,3 @@ class Genetic:
 			#print('Total coverage: ', len(E.executed_lines)/E.total_number_of_lines);
 			E.pretty_progress(len(E.executed_lines), E.total_number_of_lines)
 		return best_chromo, best_score
-
-
-# G = Genetic()
-#
-# chromo,score=G.generations(pop_size = 15, # Population pop_size
-# 						 c_size= 3, # size of chromosome (can be bytes, size of a number, size of a string...)
-# 						 n_parents=5, # How many chromosomes are entering crossover
-# 						 mutation_rate= 0.1, # selfexplanatory
-# 						 n_gen=100 # Number of generations (iterations)
-# 						 )
-
-
-
-# for i in range(len(chromo)):
-# 	print(chromo[i],score[i])

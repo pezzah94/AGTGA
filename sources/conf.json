@@ -7,5 +7,6 @@
 	"generationsCount": 8,
 	"whatToConsider": "lines",
 	"showIterations": true,
-	"": ""
+	"": "",
+	"geneTypeList": ["alpha", "digits", "punctuation", "ALPHA"]
 }

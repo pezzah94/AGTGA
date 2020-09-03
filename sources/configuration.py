@@ -25,6 +25,7 @@ class Configuration:
             self.parentsNumber = jsonData['parentsNumber'];
             self.mutationRate = jsonData['mutationRate'];
             self.generationsCount = jsonData['generationsCount'];
+            self.geneTypeList = jsonData['geneTypeList'];
         else:
             print('conf.json not found', file=sys.stderr);
 

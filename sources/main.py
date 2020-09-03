@@ -6,41 +6,25 @@ from testsaver import TestSaver
 
 
 def main():
-    G = Genetic()
 
     program_name = '../test/test'
 
-    E = Execution()
+    E = Execution() #zasto imam 2 execution objekta
 
-    #objektno testiranje svih funkcija pojedinacno
-
-
-    E.compile_program() ## za sad radi
-
-    #E.execute_test_program(program_name, '-123'); ##za sad radi
-    #tests = [('233',0.3898305084745763),('232', 0.15254237288135594)]
-
-    #ts = TestSaver('tests.out')
-    #ts.save_list(tests);
-
-
-    # return 0;
-    # #E.execute_list_tests(program_name, tests);
-
-    #resultGcov = E.run_gcov(program_name);
+    E.compile_program();
 
     C = Configuration('conf.json')
-    #print(C.testPath)
+    #G = Genetic()
 
-    chromo, score = G.generations(pop_size=C.populationSize,  # Population pop_size
-                                  c_size=C.chromosomeSize,  # size of chromosome (can be bytes, size of a number, size of a string...)
-                                  n_parents=C.parentsNumber,  # How many chromosomes are entering crossover
-                                  mutation_rate=C.mutationRate,  # selfexplanatory
-                                  n_gen=C.generationsCount # Number of generations (iterations)
-                                  )
+    G = Genetic(populationSize=C.populationSize,  # Population pop_size
+              chromosomeSize=C.chromosomeSize,  # size of chromosome (can be bytes, size of a number, size of a string...)
+              parentsNumber=C.parentsNumber,  # How many chromosomes are entering crossover
+              mutationRate=C.mutationRate,  # selfexplanatory
+              generationsCount=C.generationsCount # Number of generations (iterations)
+              #,geneTypeList=C.geneTypeList
+               )
 
-    #print(E.executed_lines);
-
+    G.start_evolution();
 
     return 0;
 
