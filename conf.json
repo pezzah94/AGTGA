@@ -1,0 +1,12 @@
+{
+	"srcPath": "test/test.cpp",
+	"populationSize": 10,
+	"chromosomeSize": 3,
+	"parentsNumber": 2,
+	"mutationRate": 0.8,
+	"generationsCount": 8,
+	"whatToConsider": "functions",
+	"showIterations": true,
+	"debug": false,
+	"geneTypeList": ["digits"]
+}
