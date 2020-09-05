@@ -5,6 +5,7 @@ import sys
 import gzip
 import json
 
+
 DEBUG = 0
 
 """
@@ -21,13 +22,14 @@ class Executor:
 	elfFile = ''
 	extension = ''
 
-	executed_lines = set();
+	executed_lines = set(); elines_count = 0;
 	executed_functions = set();
 	total_number_of_lines = -1;
 	total_number_of_functions = -1;
 
+	saver = None;
 
-	def __init__(self, srcPath):
+	def __init__(self, srcPath, testSaver=None):
 
 		if os.path.exists(srcPath):
 			self.srcPath = srcPath;
@@ -44,8 +46,12 @@ class Executor:
 			#finally:
 				#os.rmdir(self.elfFile + '-temp-dir')
 
+			self.saver = testSaver;
+
 			self.__compile_program();
 		else: print('Neispravna putanja do fajla!', file=sys.stderr);
+
+
 
 	#private member methods
 
@@ -87,7 +93,7 @@ class Executor:
 
 	def __handle_gcov_data(self, jsonStruct, whatToConsider, testinput):
 
-		#print(jsonStruct)
+		#print(testinput)
 		lines_count = 0;
 		score = 0;
 		functions_count = 0;
@@ -104,6 +110,10 @@ class Executor:
 					if file['lines'][i]['count'] >= 1:
 						score += 1
 						self.executed_lines.add(i)
+
+
+
+
 			return score / lines_count
 
 		if whatToConsider == 'functions':
@@ -124,9 +134,8 @@ class Executor:
 
 		return -1;
 
-		# public member functions
 
-	def execute_test(self, data):
+	def __execute_test(self, data):
 
 		# print('Executing program', program_name);
 		p_test = sp.Popen(['./' + self.tempFolderPath + '/' + self.elfFile], stdin=sp.PIPE, stdout=sp.PIPE,
@@ -147,11 +156,16 @@ class Executor:
 		# We perform 2 slices ( 3 list elements) and we are intereseted in 2nd element, and then we split by : so we just get number of %
 		# Possible hack
 		# extracted_data = outs.decode('UTF-8').split('\n',2)[1].split(':')[1].split(' ',1)[0][:-1]
+
 		return 0
+
+	# public member functions
 
 	def get_score(self,testinput):
 
-		p_gcov = sp.Popen(['gcov', '--json', 'test' + '.gcda'], stdout=sp.PIPE)
+		self.__execute_test(data=testinput);
+
+		p_gcov = sp.Popen(['gcov', '--json', self.elfFile + '.gcda'], stdout=sp.PIPE)
 
 		outs ,_ = p_gcov.communicate()
 		if DEBUG:
@@ -159,13 +173,13 @@ class Executor:
 			print("Debug: return stdout:", outs.decode('UTF-8'),file=sys.stderr)
 		p_gcov.kill()
 
-		if os.path.exists('test.gcda'):
-			os.remove('test.gcda')
+		if os.path.exists(self.elfFile + '.gcda'):
+			os.remove(self.elfFile + '.gcda')
 		else:
-			print("The file test.gcda does not exist")
+			print('The file ' + self.elfFile + '.gcda' + 'does not exist')
 
 
-		with gzip.open('test.gcda.gcov.json.gz', 'rb') as f:
+		with gzip.open(self.elfFile + '.gcda'+'.gcov.json.gz', 'rb') as f:
 			file_content = f.read()
 		#
 		# if os.path.exists('test.gcno'):
@@ -173,18 +187,18 @@ class Executor:
 		# else:
 		# 	print("The file test.gcno does not exist")
 
-		if os.path.exists('test.gcda.gcov.json.gz'):
-			os.remove('test.gcda.gcov.json.gz')
+		if os.path.exists(self.elfFile + '.gcda'+'.gcov.json.gz'):
+			os.remove(self.elfFile + '.gcda' + '.gcov.json.gz')
 		else:
-			print("The file test.gcda.gcov.json.gz does not exist")
+			print('The file:' + self.elfFile + '.gcda' + '.gcov.json.gz does not exist')
 
 		gcovData = json.loads(file_content);
 
 		return self.__handle_gcov_data(gcovData, 'lines',testinput);
 
-	def execute_list_tests(self, program_name, test_cases):
+	def __execute_list_tests(self, program_name, test_cases):
 		for test in test_cases:
-			self.execute_test(test)
+			self.__execute_test(test)
 
 		return 0;
 

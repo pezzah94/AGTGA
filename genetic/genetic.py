@@ -65,12 +65,9 @@ class Genetic:
 		for chromosome in population:
 			# Here we get accuracy score, tricky messy part
 
-			self.executor.execute_test(data=chromosome);
-
 			score = self.executor.get_score(chromosome);
 
 			print('Score for input', chromosome, score)
-
 
 			scores.append(score)
 		population = [x for _,x in sorted(zip(scores,population))]

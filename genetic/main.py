@@ -1,13 +1,14 @@
 from genetic import Genetic
 from configuration import Configuration
 from executor import Executor
-
+from testsaver import TestSaver
 
 def main():
 
     C = Configuration('conf.json')
 
-    E = Executor(srcPath=C.srcPath)
+    ts = TestSaver('outs.txt')
+    E = Executor(srcPath=C.srcPath, testSaver=ts);
 
     G = Genetic(populationSize=C.populationSize,  # Population pop_size
               chromosomeSize=C.chromosomeSize,  # size of chromosome (can be bytes, size of a number, size of a string...)
