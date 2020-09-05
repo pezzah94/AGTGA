@@ -1,5 +1,7 @@
 #include <iostream>
 
+
+
 int main(){
 	int i;
 	std::cout << "Pokrenut je program test.cpp\n";
