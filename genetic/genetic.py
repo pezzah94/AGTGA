@@ -73,7 +73,7 @@ class Genetic:
 		population = [x for _,x in sorted(zip(scores,population))]
 		scores.sort()
 		#print(population, scores)
-		return scores, population[::-1]  #reverse list
+		return scores, population  #reverse list
 
 	def selection(self, pop_after_fit, n_parents):
 		population_nextgen = []
@@ -113,14 +113,11 @@ class Genetic:
 
 					# 	# print(chromosome)
 			if random.random() < mutation_rate:
-				#global GENES
-				#if random.random() < 1/2:
-				clist = list(chromosome)
-				clist[random.randrange(len(clist))] = random.choice(self.GENES)
-				chromosome = "".join(clist)
-				# chromosome.replace(chromosome[j],random.choice(GENES))
-				#else:
-				#	chromosome.replace(chromosome[random.randint(0,len(chromosome)-1)],random.choice(GENES))
+				# Had trouble to escape local min
+					# clist = list(chromosome)
+					# clist[random.randrange(len(clist))] = random.choice(self.GENES)
+					# chromosome = "".join(clist)
+				chromosome = ''.join(random.choices(self.GENES, k = len(chromosome)))
 
 			population_nextgen.append(chromosome)
 		#print(population_nextgen)
@@ -137,10 +134,11 @@ class Genetic:
 			pop_after_cross = self.crossover(pop_after_sel)
 			population_nextgen = self.mutation(pop_after_cross,self.mutation_rate)
 			best_chromo.append(str(pop_after_fit[-1]))
-			best_score.append(scores[0])
+			best_score.append(scores[-1])
 			#print(best_chromo)
 			print("best chromosome so far:", str(best_chromo[-1]), best_score[-1])
-
+			if best_score[-1] == 1.0:
+				break
 			#print('Total coverage: ', len(E.executed_lines)/E.total_number_of_lines);
 			self.executor.pretty_progress(len(self.executor.executed_lines), self.executor.total_number_of_lines)
 		return best_chromo, best_score
