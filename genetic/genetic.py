@@ -37,11 +37,6 @@ class Genetic:
 
 
 
-
-
-# random.sample(population, k) mozda ovo treba ustekati
-
-
 	def initilization_of_population(self, pop_size, c_size):
 		population = []
 		for i in range(pop_size):
@@ -135,10 +130,11 @@ class Genetic:
 			population_nextgen = self.mutation(pop_after_cross,self.mutation_rate)
 			best_chromo.append(str(pop_after_fit[-1]))
 			best_score.append(scores[-1])
-			#print(best_chromo)
+
+			#print(best_score)
 			print("best chromosome so far:", str(best_chromo[-1]), best_score[-1])
-			if best_score[-1] == 1.0:
-				break
+
+
 			#print('Total coverage: ', len(E.executed_lines)/E.total_number_of_lines);
 			self.executor.pretty_progress(len(self.executor.executed_lines), self.executor.total_number_of_lines)
 		return best_chromo, best_score

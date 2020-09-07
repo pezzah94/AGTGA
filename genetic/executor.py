@@ -22,7 +22,7 @@ class Executor:
 	elfFile = ''
 	extension = ''
 
-	executed_lines = set(); elines_count = 0;
+	executed_lines = set();
 	executed_functions = set();
 	total_number_of_lines = -1;
 	total_number_of_functions = -1;
@@ -109,10 +109,11 @@ class Executor:
 
 					if file['lines'][i]['count'] >= 1:
 						score += 1
-						self.executed_lines.add(i)
 
+						if not i in self.executed_lines:
+							self.saver.save_test_case(testinput);
 
-
+						self.executed_lines.add(i);
 
 			return score / lines_count
 
@@ -132,7 +133,7 @@ class Executor:
 
 
 
-		return -1;
+		return 0;
 
 
 	def __execute_test(self, data):
@@ -206,5 +207,3 @@ class Executor:
 		length = 80;
 		percentage = executed_lines/total_number_of_lines;
 		print('Total coverage:','[' + '#'*int(length*percentage) + '.'*int(length*(1-percentage)) +']', percentage*100, '%')
-
-

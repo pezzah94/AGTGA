@@ -1,9 +1,9 @@
 {
 	"srcPath": "test/test.cpp",
 	"populationSize": 3,
-	"chromosomeSize": 2,
+	"chromosomeSize": 3,
 	"parentsNumber": 2,
-	"mutationRate": 0.2,
+	"mutationRate": 0.8,
 	"generationsCount": 8,
 	"whatToConsider": "lines",
 	"showIterations": true,

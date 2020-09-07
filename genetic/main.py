@@ -20,7 +20,8 @@ def main():
 
     G.start_evolution();
 
-    return 0;
+    ts.export_to_file()
 
+    return 0;
 
 main()
