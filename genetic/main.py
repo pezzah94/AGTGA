@@ -7,7 +7,7 @@ def main():
 
     C = Configuration('conf.json')
 
-    ts = TestSaver('outs.txt')
+    ts = TestSaver('out.txt')
     E = Executor(srcPath=C.srcPath, testSaver=ts);
 
     G = Genetic(populationSize=C.populationSize,  # Population pop_size

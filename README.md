@@ -1,20 +1,6 @@
 
-<!---
-# AGTGA
 
-Program made with help of :
-
-https://www.cc.gatech.edu/~harrold/6340/cs6340_fall2009/Readings/pga.pdf
-
-#Dependencies
-
-sudo apt install llvm-9 llvm-9-dev clang-9 libclang-9-dev python-clang-9
-
-http://s4.ce.sharif.edu/blog/2019/12/31/clang/
---->
-
-
-#Automatic generation of test cases using genetic algorithm
+# Automatic generation of test cases using genetic algorithm
 
 
 <!---
@@ -24,40 +10,71 @@ http://s4.ce.sharif.edu/blog/2019/12/31/clang/
 Release under the BSD license, see "license.txt" for details.
 --->
 
-##Introduction
+### Introduction
+
+AGTGA represents tool written in python that tries to generate collection of test inputs that have full coverage of source code. It relies on the implementation of genetic algorithm.  
+
+
+### Requirements
+
+Python interpreter
+
+g++/gcc - GNU project C and C++ compiler
+
+gcov - coverage testing tool
+
+
+### Usage
+First, you need to define parameters for genetic algorithm in file conf.json (see Description for details).
+
+Start a program with:
+
+	make run
 
 
 
+### Description
+Configuration file consists of the following parameters:
 
-##Requirements
+srcPath - the absolute or relative path to the source file that is being executed
+
+populationSize - maximum number of chromosomes (test inputs) in each generation
+
+chromosomeSize - length of each chromosomes
+
+parentsNumber - number of chromosome needed to make crossover
+
+generationsCount - number of iterations in evolution of genetic algorithm
+
+whatToConsider - one of the possible values ['lines', 'functions', 'branches']. 
+
+	'lines': -if selected, score for each test input depends on number of lines executed
+
+	'functions':- if selected, score for each test input depends on number of functions called
+
+	'brances':- if selected, score for each test input depends on number of brances taken 
+
+showIterations - display evolution progress on screen
+
+debug - display additional information about steps in evolution process
+
+geneTypeList - represents list of types of characters that is considered in making chromosome. It can have following values ["digits", "alpha", "ALPHA","whitespace", "punctuation"].
 
 
-In order to build AGTGA tool, user must install the following libraries:
-llvm-9 llvm-9-dev clang-9 libclang-9-dev python-clang-9
+Conf.file example:
+```python
+{
+	"srcPath": "test/test.cpp",
+	"populationSize": 3,
+	"chromosomeSize": 3,
+	"parentsNumber": 2,
+	"mutationRate": 0.8,
+	"generationsCount": 8,
+	"whatToConsider": "lines",
+	"showIterations": true,
+	"debug": false,
+	"geneTypeList": ["digits"]
 
-This can be done using the following comand on *nix OS:
-sudo apt install llvm-9 llvm-9-dev clang-9 libclang-9-dev python-clang-9
-
-
-
-##Installation using vcpkg
-
-
-
-##Usage
-
-
-##Examples
-
-
-
-
-
-
-
-<!--- 
-
-```C++
-//enter code here 
+}
+ 
 ```
---->

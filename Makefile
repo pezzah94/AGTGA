@@ -29,4 +29,4 @@ run:
 	${PYTHON} $(PACKAGENAME)/main.py
 
 clean:
-	rm -rf *-temp-dir *.gcda *.gcno
+	rm -rf *-temp-dir *.gcda *.gcno out.txt
