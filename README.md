@@ -27,7 +27,9 @@ gcov - coverage testing tool
 ### Usage
 First, you need to define parameters for genetic algorithm in file conf.json (see Description for details).
 
-Start a program with make run.
+Start a program with:
+
+	make run
 
 
 
