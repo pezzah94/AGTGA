@@ -10,12 +10,12 @@
 Release under the BSD license, see "license.txt" for details.
 --->
 
-## Introduction
+### Introduction
 
 AGTGA represents tool written in python that tries to generate collection of test inputs that have full coverage of source code. It relies on the implementation of genetic algorithm.  
 
 
-## Requirements
+### Requirements
 
 Python interpreter
 
@@ -24,14 +24,14 @@ g++/gcc - GNU project C and C++ compiler
 gcov - coverage testing tool
 
 
-##Usage
+### Usage
 First, you need to define parameters for genetic algorithm in file conf.json (see Description for details).
 
 Start a program with make run.
 
 
 
-## Description
+### Description
 Configuration file consists of the following parameters:
 
 srcPath - the absolute or relative path to the source file that is being executed
